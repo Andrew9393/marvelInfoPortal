@@ -5,6 +5,8 @@ import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
+import ComicsList from "../comicsList/ComicsList";
+import AppBanner from "../appBanner/AppBanner";
 
 import decoration from '../../resources/img/vision.png';
 
@@ -36,6 +38,8 @@ class App extends Component {
                         </ErrorBoundary>
                     </div>
                     <img className="bg-decoration" src={decoration} alt="vision"/>
+                    <AppBanner/>
+                    <ComicsList/>
                 </main>
             </div>
         )
