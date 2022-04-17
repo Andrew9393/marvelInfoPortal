@@ -1,38 +1,40 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import AppHeader from "../appHeader/AppHeader";
-import RandomChar from "../randomChar/RandomChar";
-import CharList from "../charList/CharList";
-import CharInfo from "../charInfo/CharInfo";
-import ErrorBoundary from "../errorBoundary/ErrorBoundary";
+// import { MainPage, ComicsPage, SingleComicPage} from "../pages";
+import Spiner from "../spiner/Spiner";
 
-import decoration from '../../resources/img/vision.png';
+const Page404 = lazy(() => import('../pages/404'));
+const MainPage = lazy(() => import('../pages/MainPage'));
+const ComicsPage = lazy(() => import('../pages/ComicsPage'));
+const SingleComicPage = lazy(() => import('../pages/SingleComicPage'));
 
 const App = () => {
     
-    const [selectedChar, setSelectedChar] = useState(null)
-
-    const onCharSelected = (id) => {
-        setSelectedChar(id)
-    }
-        return (
-            <div className="app">
-                <AppHeader/>
-                <main>
-                <ErrorBoundary>
-                    <RandomChar/>
-                </ErrorBoundary>
-                    <div className="char__content">
-                        <ErrorBoundary>
-                            <CharList onCharSelected={onCharSelected}/>
-                        </ErrorBoundary>
-                        <ErrorBoundary>
-                            <CharInfo charId={selectedChar}/>
-                        </ErrorBoundary>
-                    </div>
-                    <img className="bg-decoration" src={decoration} alt="vision"/>
-                </main>
-            </div>
+    return (
+            <BrowserRouter>
+                <div className="app">
+                  <AppHeader/>
+                    <main>
+                    <Suspense fallback={<Spiner/>}>
+                        <Switch>
+                            <Route exact path="/">
+                                <MainPage />
+                            </Route>
+                            <Route exact path="/comics">
+                            <ComicsPage />
+                            </Route>
+                            <Route exact path="/comics/:comicId">
+                            <SingleComicPage />
+                            </Route>
+                            <Route exact path="*">
+                            <Page404 />
+                            </Route>
+                        </Switch>
+                    </Suspense>
+                  </main>
+                </div>
+            </BrowserRouter>
         )
     }
 

@@ -1,124 +1,96 @@
 
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
+import useMarvelService from '../../services/MarvelService';
 import Spiner from '../spiner/Spiner';
 import ErrorMassage from '../errorMassage/ErrorMassage';
-import Skeleton from '../skeleton/Skeleton'
-import MarvelServuce from '../../services/MarvelService';
+import Skeleton from '../skeleton/Skeleton';
+
 import './charInfo.scss';
 
 const CharInfo = (props) => {
-    
-    const [char, setChar] = useState(null)
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(false)
-    
+    const [char, setChar] = useState(null);
 
-    
-    const marvelService = new MarvelServuce();
-
-    // useEffect(() => {
-    //     updateChar();
-    // }, [])
-
+    const {loading, error, getCharacter, clearError} = useMarvelService();
+ 
     useEffect(() => {
-            updateChar();
+        updateChar()
     }, [props.charId])
-
-    // componentDidMount(){
-    //     updateChar();
-    // }
-
-    // componentDidUpdate(prevProps, prevState){
-    //     if (this.props.charId !== prevProps.charId){
-    //         this.updateChar();
-    //     }
-    // }
 
     const updateChar = () => {
         const {charId} = props;
-        if(!charId){
+        if (!charId) {
             return;
         }
 
-        onCharLoading();
-        marvelService.getCharacter(charId)
+        clearError();
+        getCharacter(charId)
             .then(onCharLoaded)
-            .catch(onError)
-        
-    }
-
-    const onCharLoading = () => {
-       setLoading(true)
-    }
-
-    
-    const onError = () => {
-        setError(true)
-        setLoading(false)
     }
 
     const onCharLoaded = (char) => {
-        setChar(char)
-        setLoading(false)
+        setChar(char);
     }
 
+    const skeleton = char || loading || error ? null : <Skeleton/>;
+    const errorMessage = error ? <ErrorMassage  /> : null;
+    const spinner = loading ? <Spiner/> : null;
+    const content = !(loading || error || !char) ? <View char={char}/> : null;
 
-        const skeleton = char || loading || error ? null : <Skeleton/>
-        const errorMassage = error ? <ErrorMassage/> : null;
-        const spiner = loading ? <Spiner/> : null;
-        const content = !(loading || error || !char) ? <View char={char}/> : null;
+    return (
+        <div className="char__info">
+            {skeleton}
+            {errorMessage}
+            {spinner}
+            {content}
+        </div>
+    )
+}
 
-        return (
-            <div className="char__info">
-                {skeleton}
-                {error}
-                {loading}
-                {content}
-            </div>
-        )
-    }
 
 const View = ({char}) => {
     const {name, description, thumbnail, homepage, wiki, comics} = char;
+
     let imgStyle = {'objectFit' : 'cover'};
-            if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
-                imgStyle = {'objectFit' : 'unset'};
-            }
-    return(
+    if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
+        imgStyle = {'objectFit' : 'contain'};
+    }
+
+    return (
         <>
             <div className="char__basics">
                 <img src={thumbnail} alt={name} style={imgStyle}/>
-                    <div>
-                        <div className="char__info-name">{name}</div>
-                        <div className="char__btns">
-                            <a href={homepage} className="button button__main">
-                                <div className="inner">homepage</div>
-                            </a>
-                            <a href={wiki} className="button button__secondary">
-                                <div className="inner">Wiki</div>
-                            </a>
-                        </div>
+                <div>
+                    <div className="char__info-name">{name}</div>
+                    <div className="char__btns">
+                        <a href={homepage} className="button button__main">
+                            <div className="inner">homepage</div>
+                        </a>
+                        <a href={wiki} className="button button__secondary">
+                            <div className="inner">Wiki</div>
+                        </a>
                     </div>
                 </div>
-                <div className="char__descr">
-                    {description}
-                </div>
-                <div className="char__comics">Comics:</div>
-                <ul className="char__comics-list">
-                    {comics.length > 0 ? null : 'NO COMICS WITH THIS CHARACTER'}
-                    {
-                        comics.map((item, i) => {
-                            if(i > 9) return;
-                            return(
-                                <li key={i} className="char__comics-item">
-                                    {item.name}
-                                </li>
-                            )
-                        })
-                    }
-                    
-                </ul>
+            </div>
+            <div className="char__descr">
+                {description}
+            </div>
+            <div className="char__comics">Comics:</div>
+            <ul className="char__comics-list">
+                {comics.length > 0 ? null : 'There is no comics with this character'}
+                {
+                    comics.map((item, i) => {
+                        // eslint-disable-next-line
+                        if (i > 9) return;
+                        return (
+                            <li key={i} className="char__comics-item">
+                                {item.name}
+                            </li>
+                        )
+                    })
+                }                
+            </ul>
         </>
     )
 }
