@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 
+
 import ErrorMessage  from '../errorMassage/ErrorMassage';
 import Spiner from '../spiner/Spiner';
 import useMarvelService from '../../services/MarvelService';
@@ -24,8 +25,7 @@ const RandomChar = () => {
     const onCharLoaded = (char) => {
         setChar(char);
     }
-
-   
+       
     const updateChar = () => {
         clearError();
         const id = Math.floor(Math.random() * (1011400 - 1011000)) + 1011000;
@@ -58,6 +58,7 @@ const RandomChar = () => {
         </div>
     )
 }
+
 
 const View = ({char}) => {
     const {name, description, thumbnail, homepage, wiki} = char;

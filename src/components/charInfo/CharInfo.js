@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
@@ -9,7 +10,6 @@ import Skeleton from '../skeleton/Skeleton';
 import './charInfo.scss';
 
 const CharInfo = (props) => {
-
     const [char, setChar] = useState(null);
 
     const {loading, error, getCharacter, clearError} = useMarvelService();
@@ -47,6 +47,7 @@ const CharInfo = (props) => {
         </div>
     )
 }
+
 
 const View = ({char}) => {
     const {name, description, thumbnail, homepage, wiki, comics} = char;
