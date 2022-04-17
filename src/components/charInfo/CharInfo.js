@@ -34,7 +34,7 @@ const CharInfo = (props) => {
     }
 
     const skeleton = char || loading || error ? null : <Skeleton/>;
-    const errorMessage = error ? <ErrorMassage  q/> : null;
+    const errorMessage = error ? <ErrorMassage  /> : null;
     const spinner = loading ? <Spiner/> : null;
     const content = !(loading || error || !char) ? <View char={char}/> : null;
 
