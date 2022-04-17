@@ -5,6 +5,7 @@ import Spiner from '../spiner/Spiner';
 import useMarvelService from '../../services/MarvelService';
 
 import './charList.scss';
+import { logger } from './someFuns';
 
 const CharList = (props) => {
 
