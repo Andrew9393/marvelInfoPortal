@@ -1,4 +1,6 @@
 import {useState, useEffect, useRef} from 'react';
+import { Transition } from 'react-transition-group';
+
 import PropTypes from 'prop-types';
 import ErrorMessage from '../errorMassage/ErrorMassage';
 import Spiner from '../spiner/Spiner';

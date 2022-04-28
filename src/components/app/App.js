@@ -1,13 +1,15 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import AppHeader from "../appHeader/AppHeader";
-// import { MainPage, ComicsPage, SingleComicPage} from "../pages";
 import Spiner from "../spiner/Spiner";
 
 const Page404 = lazy(() => import('../pages/404'));
 const MainPage = lazy(() => import('../pages/MainPage'));
+const SingleComicLayout = lazy(() => import('../pages/singleComicLayout/SingleComicLayout'));
+const SingleCharacterLayout = lazy(() => import('../pages/singleCharacterLayout/SingleCharacterLayout'));
 const ComicsPage = lazy(() => import('../pages/ComicsPage'));
-const SingleComicPage = lazy(() => import('../pages/SingleComicPage'));
+const SinglePage = lazy(() => import('../pages/SinglePage'));
+
 
 
 const App = () => {
@@ -18,18 +20,21 @@ const App = () => {
                   <AppHeader/>
                     <main>
                     <Suspense fallback={<Spiner/>}>
-                        <Switch>
+                    <Switch>
                             <Route exact path="/">
-                                <MainPage />
+                                <MainPage/>
                             </Route>
                             <Route exact path="/comics">
-                            <ComicsPage />
+                                <ComicsPage/>
                             </Route>
-                            <Route exact path="/comics/:comicId">
-                            <SingleComicPage />
+                            <Route exact path="/comics/:id">
+                                <SinglePage Component={SingleComicLayout} dataType='comic'/>
                             </Route>
-                            <Route exact path="*">
-                            <Page404 />
+                            <Route exact path="/characters/:id">
+                                <SinglePage Component={SingleCharacterLayout} dataType='character'/>
+                            </Route>
+                            <Route path="*">
+                                <Page404/>
                             </Route>
                         </Switch>
                     </Suspense>
