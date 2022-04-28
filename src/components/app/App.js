@@ -11,7 +11,6 @@ const ComicsPage = lazy(() => import('../pages/ComicsPage'));
 const SinglePage = lazy(() => import('../pages/SinglePage'));
 
 
-
 const App = () => {
     
     return (

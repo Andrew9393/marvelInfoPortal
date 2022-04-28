@@ -33,7 +33,6 @@ const CharList = (props) => {
         if (newCharList.length < 9) {
             ended = true;
         }
-
         setCharList(charList => [...charList, ...newCharList]);
         setNewItemLoading(newItemLoading => false);
         setOffset(offset => offset + 9);
@@ -98,6 +97,7 @@ const CharList = (props) => {
 
     const errorMessage = error ? <ErrorMessage/> : null;
     const spinner = loading && !newItemLoading ? <Spiner/> : null;
+
 
     return (
         <div className="char__list">
